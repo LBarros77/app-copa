@@ -5,7 +5,7 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@
 import { AuthContextProvider } from './src/contexts/AuthContext';
 import { THEME } from './src/styles/theme';
 import { Loading } from './src/components/Loading';
-import { SiginIn } from './src/screens/SiginIn';
+import { Routes } from './src/routes';
 
 export default function App() {
   const [fontsLoad] = useFonts({ Roboto_400Regular, Roboto_500Medium, Roboto_700Bold });
@@ -14,7 +14,7 @@ export default function App() {
     <NativeBaseProvider theme={THEME}>
       <AuthContextProvider>
         <StatusBar style="light" backgroundColor="transparent" translucent />
-        { fontsLoad ? <SiginIn /> : <Loading /> }
+        { fontsLoad ? <Routes /> : <Loading /> }
       </AuthContextProvider>
     </NativeBaseProvider>
   );
