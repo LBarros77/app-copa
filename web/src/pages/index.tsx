@@ -7,20 +7,20 @@ import { api } from '../lib/axios';
 import { FormEvent, useState } from 'react'
 
 interface HomeProps {
-  poolCount: number;
+  pollCount: number;
   guessCount: number;
   userCount: number;
 }
 
 export default function Home(props: HomeProps) {
-  const [poolTitle, setPoolTitle] = useState('')
+  const [pollTitle, setPollTitle] = useState('')
 
-  async function createPool(event: FormEvent) {
+  async function createPoll(event: FormEvent) {
     event.preventDefault();
 
     try {
-      const response = await api.post('/pools', {
-        title: poolTitle
+      const response = await api.post('/polls', {
+        title: pollTitle
       })
 
       const { code } = response.data;
@@ -28,7 +28,7 @@ export default function Home(props: HomeProps) {
       await navigator.clipboard.writeText(code);
 
       alert('Bolão criado com sucesso, o códico foi copiado para área de transferência!');
-      setPoolTitle('')
+      setPollTitle('')
     } catch (err) {
       console.log(err);
       alert('Falha ao criar o bolão, tente novamente!')
@@ -51,7 +51,7 @@ export default function Home(props: HomeProps) {
           </strong>
         </div>
 
-        <form onSubmit={createPool} className="mt-10 flex gap-2">
+        <form onSubmit={createPoll} className="mt-10 flex gap-2">
           <input
             className="flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100"
             type="text"
@@ -73,7 +73,7 @@ export default function Home(props: HomeProps) {
           <div className="flex items-center gap-4">
             <Image src={iconCheckImg} alt="" />
             <div className="flex flex-col">
-              <span>+{props.poolCount}</span>
+              <span>+{props.pollCount}</span>
               <span>Bolões criados</span>
             </div>
           </div>
@@ -101,15 +101,15 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps = async () => {
-  const [poolCountResponse, guessCountResponse, userCountResponse] = await Promise.all([
-    api.get('pools/count'),
+  const [pollCountResponse, guessCountResponse, userCountResponse] = await Promise.all([
+    api.get('polls/count'),
     api.get('guesses/count'),
     api.get('users/count')
   ])
 
   return {
     props: {
-      poolCount: poolCountResponse.data.count,
+      pollCount: pollCountResponse.data.count,
       guessCount: guessCountResponse.data.count,
       userCount: userCountResponse.data.count
     }
